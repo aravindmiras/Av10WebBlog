@@ -1,0 +1,42 @@
+---
+const { title, describe, img, date, link}=Astro.props;
+---
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(function(){
+        var replacers = document.querySelectorAll('[data-replace]');
+        for(var i=0; i<replacers.length; i++){
+            console.log('hit here2');
+            let replaceClasses = JSON.parse(replacers[i].dataset.replace.replace(/'/g, '"'));
+            Object.keys(replaceClasses).forEach(function(key) {
+                replacers[i].classList.remove(key);
+                replacers[i].classList.add(replaceClasses[key]);
+            });
+        }
+    }, 1);
+});
+</script>
+<!DOCTYPE html>
+<html lang="en">
+
+<div class="max-w-sm rounded overflow-hidden shadow-lg duration-700 relative transform opacity-0 transition-all translate-y-12 ease-out" data-replace='{ "translate-y-12": "translate-y-0", "opacity-0": "opacity-100" }'>
+
+    <img class="w-full transition duration-300 ease-in-out hover:scale-110" src={`${img}`} alt="Blog Thumbnail">
+    <div class="px-6 py-4">
+        <a href={`${link}`}>
+      <div class="font-bold text-xl mb-2">{title}</div> </a>
+      <p class="text-gray-700 text-base">
+       {describe}
+      </p>
+    </div>
+    <div class="px-6 pt-4 pb-2">
+      <div class="flex items-center">
+        <img class="w-10 h-10 rounded-full mr-4" src="./sources/aravind.png" alt="Avatar of Aravind Miras">
+        <div class="text-sm">
+          <p class="text-gray-900 leading-none">Aravind Miras</p>
+          <p class="text-gray-600">{date}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </html>

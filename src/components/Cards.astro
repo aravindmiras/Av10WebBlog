@@ -1,0 +1,25 @@
+---
+const{title, caption, image}=Astro.props;
+---
+<script>
+	document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(function(){
+        var replacers = document.querySelectorAll('[data-replace]');
+        for(var i=0; i<replacers.length; i++){
+            console.log('hit here2');
+            let replaceClasses = JSON.parse(replacers[i].dataset.replace.replace(/'/g, '"'));
+            Object.keys(replaceClasses).forEach(function(key) {
+                replacers[i].classList.remove(key);
+                replacers[i].classList.add(replaceClasses[key]);
+            });
+        }
+    }, 1);
+});
+</script>
+<div class="card w-96 bg-base-100 shadow-xl duration-700 delay-150 relative transform transition-all opacity-0 translate-y-12 ease-out" data-replace='{ "translate-y-12": "translate-y-0", "opacity-0": "opacity-100" }'>
+  <div class="card-body">
+    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{title}</h2>
+    <p class="my-4 font-light">{caption}</p>
+  </div>
+  <figure><img src={`${image}`} class="transition duration-300 ease-in-out hover:scale-110"/></figure>
+</div>

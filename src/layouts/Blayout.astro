@@ -1,0 +1,33 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import AboutAuthor from "../components/AboutAuthor.astro";
+const { title, author } = Astro.props.frontmatter || Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title} | av10 Blog</title>
+</head>
+
+<body class="min-h-screen bg-slate-50 dark:bg-black">
+		<Header/>
+        <div class="container my-24 px-6 mx-auto">
+            <section class="mb-32 text-gray-800">
+                <h1 class="font-bold text-3xl mb-4">{title}</h1>
+                <p class="uppercase text-red-600 font-bold mb-6 flex items-center">
+                    By {author}
+                  </p>
+                  <p class="mb-6">
+                    <slot/>
+                  </p>
+    </section>
+    <AboutAuthor/>
+    </div>
+<div><br></div>
+<Footer/>
+</body>
+</html>

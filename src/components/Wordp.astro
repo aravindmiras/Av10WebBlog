@@ -1,0 +1,14 @@
+---
+const res = await fetch("http://public-api.wordpress.com/rest/v1.1/sites/av10in.wordpress.com/posts/");
+const data = await res.json()
+
+---
+<h1>Astro + WordPress 🚀</h1>
+
+{
+    data.posts.map((op)=> (
+      <img src={`${op.featured_image}`}/>
+      <h2 set:html={op.title} />
+      <p set:html={op.content} />
+  ))
+  }

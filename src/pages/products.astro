@@ -1,0 +1,31 @@
+---
+import Header from "../components/Header.astro";
+import Footer from '../components/Footer.astro';
+import ListExample from "../components/ListExamples";
+import DisplayNames from "../react-components/DisplayNames";
+import KeyExamples from "../react-components/KeyExamples";
+import Form from "../react-components/Form";
+import Threejs from "../components/Threejs.astro";
+import Wordp from "../components/Wordp.astro";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+</head>
+
+<body class="min-h-screen bg-slate-50 dark:bg-black">
+		<Header/>
+    
+        <section id="hero" class="flex flex-col-reverse justify-center sm:flex-row px-6 items-center gap-8 mb-12">
+         
+        <Form></Form>
+    </section>
+    
+		<Footer/>
+    
+</body>
+</html>

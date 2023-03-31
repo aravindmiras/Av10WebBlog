@@ -1,0 +1,37 @@
+---
+import Header from "../components/Header.astro";
+import Footer from '../components/Footer.astro';
+import BlogCards from "../components/BlogCards.astro";
+
+const res = await fetch("https://public-api.wordpress.com/wp/v2/sites/av10in.wordpress.com/posts");
+const posts = await res.json()
+
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogs By av10</title>
+</head>
+
+<body class="min-h-screen bg-slate-50 dark:bg-black content-center">
+    <Header/>
+    <main class="max-w-4xl mx-auto">
+		
+        <div class="grid grid-cols-2 gap-4">
+            {
+                posts.map((op)=> (
+                   <BlogCards title={`${op.title.rendered}`} describe={`${op.excerpt.rendered}`} img={`${op.jetpack_featured_media_url}`} date={`${op.date}`} link={`/posts/${op.slug}/`}/>
+              ))
+              }
+
+            
+           
+        </div>
+    </main>
+    <div><br></div>
+    <Footer/>
+</body>
+</html>
