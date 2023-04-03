@@ -1,6 +1,9 @@
 ---
-const { title, describe, img, date, link}=Astro.props;
+const { uslug }=Astro.props;
+let av1= await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/av10in.wordpress.com/posts/slug:${uslug}`)
+let autharr = await av1.json();
 ---
+<html lang="en">
 <script>
   document.addEventListener("DOMContentLoaded", function(){
     setTimeout(function(){
@@ -16,25 +19,23 @@ const { title, describe, img, date, link}=Astro.props;
     }, 1);
 });
 </script>
-<!DOCTYPE html>
-<html lang="en">
+
+
 
 <div class="max-w-sm rounded overflow-hidden shadow-lg duration-700 relative transform opacity-0 transition-all translate-y-12 ease-out" data-replace='{ "translate-y-12": "translate-y-0", "opacity-0": "opacity-100" }'>
 
-    <img class="w-full transition duration-300 ease-in-out hover:scale-110" src={`${img}`} alt="Blog Thumbnail">
+    <img class="w-full transition duration-300 ease-in-out hover:scale-110" src={autharr.featured_image} alt="Blog Thumbnail">
     <div class="px-6 py-4">
-        <a href={`${link}`}>
-      <div class="font-bold text-xl mb-2">{title}</div> </a>
-      <p class="text-gray-700 text-base">
-       {describe}
-      </p>
+        <a href={`/posts/${autharr.slug}`}>
+     <div class="font-bold text-xl mb-2" set:html={autharr.title}/></a>
+      <p class="text-gray-700 text-base" set:html={autharr.excerpt} />
     </div>
     <div class="px-6 pt-4 pb-2">
       <div class="flex items-center">
-        <img class="w-10 h-10 rounded-full mr-4" src="./sources/aravind.png" alt="Avatar of Aravind Miras">
+        <img class="w-10 h-10 rounded-full mr-4" src={autharr.author.avatar_URL} alt="Avatar of Aravind Miras">
         <div class="text-sm">
-          <p class="text-gray-900 leading-none">Aravind Miras</p>
-          <p class="text-gray-600">{date}</p>
+          <p class="text-gray-900 leading-none">{autharr.author.name}</p>
+          <p class="text-gray-600">{autharr.date}</p>
         </div>
       </div>
     </div>

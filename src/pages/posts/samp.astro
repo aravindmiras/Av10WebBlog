@@ -1,0 +1,48 @@
+--- 
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import AboutAuthor from "../../components/AboutAuthor.astro";
+
+const { slug } = Astro.params;
+
+let res = await fetch(`https://public-api.wordpress.com/wp/v2/sites/av10in.wordpress.com/posts?slug=${slug}`)
+let [post] = await res.json();
+
+let av1= await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/av10in.wordpress.com/posts/slug:${slug}`)
+let autharr = await av1.json();
+
+// The getStaticPaths() is required for static Astro sites.
+// If using SSR, you will not need this function.
+export async function getStaticPaths() {
+  let data = await fetch("https://public-api.wordpress.com/wp/v2/sites/av10in.wordpress.com/posts")
+  let posts = await data.json();
+
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post: post },
+  }));
+}
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{post.slug} | av10 Blog</title>
+</head>
+  <div class="min-h-screen bg-slate-50 dark:bg-black">
+  <Header/>
+  <div class="container my-24 px-6 mx-auto">
+    <section class="mb-32 text-gray-800">
+    <h1 class="font-bold text-3xl mb-4" set:html={post.title.rendered} />
+    <p class="uppercase text-red-600 font-bold mb-6 flex items-center" set:html={autharr.author.name} />
+    <img src={post.jetpack_featured_media_url}/>
+  </section>
+  <div class="mb-6" set:html={post.content.rendered}/>
+
+</div>
+<AboutAuthor first_name={autharr.author.name} nice_name={autharr.author.nice_name} avatar_url={autharr.author.avatar_URL} />
+<Footer/>
+</div>
+  </html>

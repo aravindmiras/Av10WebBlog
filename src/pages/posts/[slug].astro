@@ -1,0 +1,51 @@
+---
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import AboutAuthor from "../../components/AboutAuthor.astro";
+
+const { slug } = Astro.params;
+
+let res = await fetch(`https://public-api.wordpress.com/wp/v2/sites/av10in.wordpress.com/posts?slug=${slug}`)
+let [post] = await res.json();
+
+let av1= await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/av10in.wordpress.com/posts/slug:${slug}`)
+let autharr = await av1.json();
+
+// The getStaticPaths() is required for static Astro sites.
+// If using SSR, you will not need this function.
+export async function getStaticPaths() {
+  let data = await fetch("https://public-api.wordpress.com/wp/v2/sites/av10in.wordpress.com/posts")
+  let posts = await data.json();
+
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post: post },
+  }));
+}
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{post.slug} | av10 Blog</title>
+</head>
+<Header/>
+  <div class="min-h-screen bg-slate-50 dark:bg-black">
+    <div class="p-5 mx-auto sm:p-10 md:p-16 dark:bg-gray-800 dark:text-gray-100">
+        <div class="flex flex-col max-w-3xl mx-auto overflow-hidden rounded">
+            <img src={post.jetpack_featured_media_url} alt="" class="w-full h-60 sm:h-96 dark:bg-gray-500">
+            <div class="p-6 pb-12 m-4 mx-auto -mt-16 space-y-6 lg:max-w-2xl sm:px-10 sm:mx-12 lg:rounded-md dark:bg-gray-900">
+                <div class="space-y-2">
+                    <h1 class="inline-block text-2xl font-semibold sm:text-3xl" set:html={post.title.rendered} />
+                        <p class="text-xs dark:text-gray-400" set:html={autharr.author.name} />
+                </div>
+                     <div class="dark:text-gray-100" set:html={post.content.rendered}/>	
+            </div>
+        </div>
+    </div>
+<AboutAuthor first_name={autharr.author.name} nice_name={autharr.author.nice_name} avatar_url={autharr.author.avatar_URL} />
+<Footer/>
+    </div>
+    </html>

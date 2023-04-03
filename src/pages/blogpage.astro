@@ -6,6 +6,7 @@ import BlogCards from "../components/BlogCards.astro";
 const res = await fetch("https://public-api.wordpress.com/wp/v2/sites/av10in.wordpress.com/posts");
 const posts = await res.json()
 
+
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +24,7 @@ const posts = await res.json()
         <div class="grid grid-cols-2 gap-4">
             {
                 posts.map((op)=> (
-                   <BlogCards title={`${op.title.rendered}`} describe={`${op.excerpt.rendered}`} img={`${op.jetpack_featured_media_url}`} date={`${op.date}`} link={`/posts/${op.slug}/`}/>
+                   <BlogCards uslug={op.slug} />
               ))
               }
 
